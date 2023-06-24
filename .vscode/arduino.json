@@ -1,0 +1,7 @@
+{
+    "sketch": "TeensyMoog.ino",
+    "configuration": "usb=serialmidiaudio,speed=96,opt=o2std,keys=en-us",
+    "board": "teensy:avr:teensy31",
+    "output": "./build",
+    "port": "COM16"
+}
