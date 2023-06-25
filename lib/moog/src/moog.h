@@ -1,6 +1,7 @@
 #include <Arduino.h>
 #include <Audio.h>
 #include "moogconfig.h"
+#include "analogknob.h"
 
 class MoogSynth
 {
@@ -13,8 +14,12 @@ public:
 	void setTune();
 
 	float tune;
+	AnalogKnob knobTune;
+	float range[NUM_OSCILLATORS];
+	float oscillator2;
+	float oscillator3;
 
-private:
+//private:
 	void _makePatchConnections();
 	AudioSynthWaveform _oscillators[NUM_OSCILLATORS];
 	AudioMixer4 _mixer;
@@ -22,7 +27,7 @@ private:
 	AudioOutputUSB _usb;
 	AudioConnection _patchCoord[NUM_PATCH_CORDS];
 
-public:
-	float _oscillators_pitch[NUM_OSCILLATORS];
+	float _oscillators_pitch[NUM_OSCILLATORS];	
+	
 };
 
