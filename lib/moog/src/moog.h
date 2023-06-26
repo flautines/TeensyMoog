@@ -13,11 +13,11 @@ public:
 	void update();
 	void setTune();
 
-	float tune;
-	AnalogKnob knobTune;
+	// 0 - Tune, 1 - Oscillator-2, 2 - Oscillator-3
+	AnalogKnob knobOscillators[NUM_OSCILLATORS];
+	
 	float range[NUM_OSCILLATORS];
-	float oscillator2;
-	float oscillator3;
+	
 
 //private:
 	void _makePatchConnections();

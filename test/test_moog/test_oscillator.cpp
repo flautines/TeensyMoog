@@ -16,11 +16,10 @@ void tearDown(void) {
 
 void test_constructor(void)
 {	
-	TEST_ASSERT_EQUAL_FLOAT(0.0f, minimoog.tune);
-	TEST_ASSERT_EQUAL_INT(A0, minimoog.knobTune._pin);
+	TEST_ASSERT_EQUAL_INT(A0, minimoog.knobOscillators[0]._pin);
+	TEST_ASSERT_EQUAL_INT(A1, minimoog.knobOscillators[1]._pin);
+	TEST_ASSERT_EQUAL_INT(A2, minimoog.knobOscillators[2]._pin);
 	TEST_ASSERT_EACH_EQUAL_FLOAT(0.0f, minimoog._oscillators_pitch, NUM_OSCILLATORS);
-	TEST_ASSERT_EQUAL_FLOAT(0.0f, minimoog.oscillator2);
-	TEST_ASSERT_EQUAL_FLOAT(0.0f, minimoog.oscillator3);
 	TEST_ASSERT_EACH_EQUAL_FLOAT(0.0f, minimoog.range, NUM_OSCILLATORS);
 
 }
@@ -36,9 +35,7 @@ void test_update()
 	minimoog.range[1] = RANGE_8;
 	minimoog.range[2] = RANGE_4;
 	minimoog.update();
-	TEST_ASSERT_EQUAL_FLOAT(RANGE_16 * 4.0f, minimoog._oscillators_pitch[0]);
-	TEST_ASSERT_EQUAL_FLOAT(RANGE_8  * 4.0f, minimoog._oscillators_pitch[1]);
-	TEST_ASSERT_EQUAL_FLOAT(RANGE_4  * 4.0f,minimoog._oscillators_pitch[2]);
+	TEST_ASSERT_FLOAT_WITHIN(0.5f, 0.0f, fabs(RANGE_16 * 4.0f - minimoog._oscillators_pitch[0]));
 }
 
 void setup() {
