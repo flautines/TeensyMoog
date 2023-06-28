@@ -13,21 +13,25 @@ public:
 	void update();
 	void setTune();
 
-	// 0 - Tune, 1 - Oscillator-2, 2 - Oscillator-3
 	AnalogKnob knobOscillators[NUM_OSCILLATORS];
 	
 	float range[NUM_OSCILLATORS];
 	
 
 //private:
-	void _makePatchConnections();
-	AudioSynthWaveform _oscillators[NUM_OSCILLATORS];
-	AudioMixer4 _mixer;
-	AudioOutputAnalog _dac;
-	AudioOutputUSB _usb;
-	AudioConnection _patchCoord[NUM_PATCH_CORDS];
+	void makePatchConnections();
+	void initializeOscillators();
+	void setDefaultOscillatorsVolume();
+	void updateAllKnobs();
+	void updateAudio();
 
-	float _oscillators_pitch[NUM_OSCILLATORS];	
+	AudioSynthWaveform _audioOscillators[NUM_OSCILLATORS];
+	AudioMixer4 _audioMixer;
+	AudioOutputAnalog _audioDac;
+	AudioOutputUSB _audioUsb;
+	AudioConnection _audioPatch[NUM_PATCH_CORDS];
+
+	float _pitchOscillators[NUM_OSCILLATORS];	
 	
 };
 
