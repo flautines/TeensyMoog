@@ -25,35 +25,27 @@ void MoogSynth::update()
 {
 	updateAllKnobs();
 
-	setTune();
+	for (int oscillatorId = 0; oscillatorId < NUM_OSCILLATORS; ++oscillatorId) {
+		setTuneOscillator(oscillatorId);
+	}
 
 	updateAudio();
 }
 
-void MoogSynth::setTune()
+void MoogSynth::setTuneOscillator(int oscillatorId)
 {
-	float tune, oscillator2, oscillator3;
+	AnalogKnob knob = knobOscillators[0];
+	float semitones = getSemitonesFromKnob(knob, NUM_SEMITONES_IN_TUNE_KNOB);
+	float frequencyScale = getFrequencyScaleFromSemitones(semitones);
 
-	float knobTune = knobOscillators[0].getNormalized();
-	float knobOsc2 = knobOscillators[1].getNormalized();
-	float knobOsc3 = knobOscillators[2].getNormalized();
+	_pitchOscillators[oscillatorId] = range[oscillatorId] * frequencyScale;
 
-	// TUNE Range -2 .. +2 octaves
-	tune = (knobTune - 0.5f) * 4.0f * 12.0f;		
-	float tune_offset = pow(2.0f, (tune / 12.0f));
-
-	for (int i = 0; i < NUM_OSCILLATORS; ++i) {
-		_pitchOscillators[i] = range[i] * tune_offset;
+	if (oscillatorId > 0) {
+		knob = knobOscillators[oscillatorId];
+		semitones = getSemitonesFromKnob(knob, NUM_SEMITONES_IN_OSC_KNOB);
+		frequencyScale = getFrequencyScaleFromSemitones(semitones);
+		_pitchOscillators[oscillatorId] *= frequencyScale;
 	}
-
-	// Oscillator-2 and Oscillator-3 range from -7 .. +7 semitones
-	oscillator2 = (knobOsc2 - 0.5f) * 14.0f;
-	oscillator3 = (knobOsc3 - 0.5f) * 14.0f;
-	float oscillator2_offset = pow(2.0f, (oscillator2 / 12.0f));
-	float oscillator3_offset = pow(2.0f, (oscillator3 / 12.0f));
-
-	_pitchOscillators[1] = _pitchOscillators[1] * oscillator2_offset;
-	_pitchOscillators[2] = _pitchOscillators[2] * oscillator3_offset;
 }
 
 ///////////////////////////////////////////////////////////
@@ -99,4 +91,15 @@ void MoogSynth::updateAudio()
 		_audioOscillators[i].frequency(_pitchOscillators[i]);
 	}
 	AudioInterrupts();	
+}
+
+float MoogSynth::getSemitonesFromKnob(const AnalogKnob& knob, float semitones)
+{
+	float knobValue = knob.getNormalized();
+	return ( (knobValue - 0.5f) * 2.0f * semitones );
+}
+
+float MoogSynth::getFrequencyScaleFromSemitones(float semitones)
+{
+	return pow(2.0f, (semitones / 12.0f));
 }

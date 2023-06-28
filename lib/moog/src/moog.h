@@ -11,7 +11,7 @@ public:
 
 	void begin();
 	void update();
-	void setTune();
+	void setTuneOscillator(int oscillatorId);
 
 	AnalogKnob knobOscillators[NUM_OSCILLATORS];
 	
@@ -24,6 +24,8 @@ public:
 	void setDefaultOscillatorsVolume();
 	void updateAllKnobs();
 	void updateAudio();
+	float getSemitonesFromKnob(const AnalogKnob& knob, float semitones);
+	float getFrequencyScaleFromSemitones(float semitones);
 
 	AudioSynthWaveform _audioOscillators[NUM_OSCILLATORS];
 	AudioMixer4 _audioMixer;

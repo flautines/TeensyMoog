@@ -6,8 +6,8 @@ public:
 	AnalogKnob(uint8_t pin);
 	~AnalogKnob();
 	void update();
-	inline int getValue() { return _value; }
-	inline float getNormalized() { return _normalized; }
+	inline int getValue() const { return _value; }
+	inline float getNormalized() const { return _normalized; }
 	
 //private:
 	uint8_t _pin;

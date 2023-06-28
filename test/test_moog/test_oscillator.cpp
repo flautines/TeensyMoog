@@ -19,8 +19,12 @@ void test_constructor(void)
 	TEST_ASSERT_EQUAL_INT(A0, minimoog.knobOscillators[0]._pin);
 	TEST_ASSERT_EQUAL_INT(A1, minimoog.knobOscillators[1]._pin);
 	TEST_ASSERT_EQUAL_INT(A2, minimoog.knobOscillators[2]._pin);
-	TEST_ASSERT_EACH_EQUAL_FLOAT(0.0f, minimoog._pitchOscillators, NUM_OSCILLATORS);
-	TEST_ASSERT_EACH_EQUAL_FLOAT(0.0f, minimoog.range, NUM_OSCILLATORS);
+	TEST_ASSERT_EQUAL_FLOAT(0.0f, minimoog._pitchOscillators[0]);
+	TEST_ASSERT_EQUAL_FLOAT(0.0f, minimoog._pitchOscillators[1]);
+	TEST_ASSERT_EQUAL_FLOAT(0.0f, minimoog._pitchOscillators[2]);
+	TEST_ASSERT_EQUAL_FLOAT(0.0f, minimoog.range[0]);
+	TEST_ASSERT_EQUAL_FLOAT(0.0f, minimoog.range[1]);
+	TEST_ASSERT_EQUAL_FLOAT(0.0f, minimoog.range[2]);
 
 }
 
@@ -36,6 +40,7 @@ void test_update()
 	minimoog.range[2] = RANGE_4;
 	minimoog.update();
 	TEST_ASSERT_FLOAT_WITHIN(0.5f, 0.0f, fabs(RANGE_16 * 4.0f - minimoog._pitchOscillators[0]));
+	//TEST_ASSERT_FLOAT_WITHIN(0.5f, 0.0f, fabs(RANGE_16 * 4.0f - minimoog._pitchOscillators[0]));
 }
 
 void setup() {
@@ -49,8 +54,10 @@ void setup() {
 	
 	RUN_TEST(test_begin);
 	
-	RUN_TEST(test_update);
-	
+	for (int i=0; i<15; i++) {
+		RUN_TEST(test_update);
+		delay(250);
+	}
 
 	UNITY_END();
 }
