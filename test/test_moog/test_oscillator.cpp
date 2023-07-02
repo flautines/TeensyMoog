@@ -35,11 +35,11 @@ void test_begin(void)
 
 void test_update()
 {
-	minimoog.range[0] = RANGE_16;
+	minimoog.range[0] = RANGE_8;
 	minimoog.range[1] = RANGE_8;
 	minimoog.range[2] = RANGE_4;
 	minimoog.update();
-	TEST_ASSERT_FLOAT_WITHIN(0.5f, 0.0f, fabs(RANGE_16 * 4.0f - minimoog._pitchOscillators[0]));
+	TEST_ASSERT_FLOAT_WITHIN(0.5f, RANGE_8, minimoog._pitchOscillators[0]);
 	//TEST_ASSERT_FLOAT_WITHIN(0.5f, 0.0f, fabs(RANGE_16 * 4.0f - minimoog._pitchOscillators[0]));
 }
 

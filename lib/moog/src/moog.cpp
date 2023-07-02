@@ -35,14 +35,14 @@ void MoogSynth::update()
 void MoogSynth::setTuneOscillator(int oscillatorId)
 {
 	AnalogKnob knob = knobOscillators[0];
-	float semitones = getSemitonesFromKnob(knob, NUM_SEMITONES_IN_TUNE_KNOB);
+	float semitones = getSemitonesFromKnob(knob, SEMITONES_IN_TUNE);
 	float frequencyScale = getFrequencyScaleFromSemitones(semitones);
 
 	_pitchOscillators[oscillatorId] = range[oscillatorId] * frequencyScale;
 
 	if (oscillatorId > 0) {
 		knob = knobOscillators[oscillatorId];
-		semitones = getSemitonesFromKnob(knob, NUM_SEMITONES_IN_OSC_KNOB);
+		semitones = getSemitonesFromKnob(knob, SEMITONES_IN_OSC);
 		frequencyScale = getFrequencyScaleFromSemitones(semitones);
 		_pitchOscillators[oscillatorId] *= frequencyScale;
 	}

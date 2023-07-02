@@ -17,10 +17,8 @@ constexpr int NUM_PATCH_CORDS 	= 15;
 #define RANGE_4 RANGE_8 * 2
 #define RANGE_2 RANGE_4 * 2
 
-constexpr float NUM_OCTAVES_IN_TUNE_KNOB = 2.0f;
-constexpr float NUM_SEMITONES_PER_OCTAVE = 12.0f;
-constexpr float NUM_SEMITONES_IN_TUNE_KNOB = NUM_SEMITONES_PER_OCTAVE * NUM_OCTAVES_IN_TUNE_KNOB;
-constexpr float NUM_SEMITONES_IN_OSC_KNOB = 7.0f;
+constexpr float SEMITONES_IN_TUNE = 2.5f;
+constexpr float SEMITONES_IN_OSC = 7.0f;
 
 ///////////////////////////////////////////////////////////
 // PIN ASSIGNMENT
