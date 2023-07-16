@@ -1,44 +1,57 @@
 #include <Arduino.h>
 #include <unity.h>
+#include <ic74hc165.h>
+#include <moog.h>
 
 void setUp(){}
 void tearDown(){}
 
-// PL pin 1
-constexpr uint8_t pinLoad = 7;
-// CE pin 15
-constexpr uint8_t pinClockEnable = 10;
-// Q7 pin 7
-constexpr uint8_t pinDataIn = 9;
-// CP pin 2
-constexpr uint8_t pinClockIn = 8;
+Ic74hc165 shiftRegister {PIN_LOAD, PIN_DATAIN, PIN_CLOCKIN, PIN_ENABLE};
+
+void test_constructor()
+{
+	TEST_ASSERT_EQUAL_UINT8(PIN_LOAD, shiftRegister._pinLoad);
+	TEST_ASSERT_EQUAL_UINT8(PIN_DATAIN, shiftRegister._pinDataIn);
+	TEST_ASSERT_EQUAL_UINT8(PIN_CLOCKIN, shiftRegister._pinClockIn);
+	TEST_ASSERT_EQUAL_UINT8(PIN_ENABLE, shiftRegister._pinEnable);
+	
+	TEST_ASSERT_FALSE(shiftRegister.isInitialized());
+}
+
+void test_begin()
+{
+	shiftRegister.begin();
+	TEST_ASSERT_TRUE(shiftRegister.isInitialized());
+}
+
+void test_update()
+{
+	shiftRegister.begin();
+
+	constexpr long CHANGE_POSITION_DELAY = 2000;
+	
+	uint8_t SHIFT_VALUE = 0x01;
+
+	for (int i=0; i < 6; ++i) {
+		shiftRegister.update();
+		TEST_ASSERT_EQUAL_UINT8(SHIFT_VALUE, shiftRegister.getValue());
+		TEST_MESSAGE("MOVE DIAL TO NEXT POSITION");
+		SHIFT_VALUE <<= 1;
+		delay(CHANGE_POSITION_DELAY);
+	}
+}
 
 void setup()
 {
 	Serial.begin(9600);
 
-	// Setup 74HC165 connections
-	pinMode(pinLoad, OUTPUT);
-	pinMode(pinClockEnable, OUTPUT);
-	pinMode(pinClockIn, OUTPUT);
-	pinMode(pinDataIn, INPUT);
+	UNITY_BEGIN();
+	RUN_TEST(test_constructor);
+	RUN_TEST(test_begin);
+	RUN_TEST(test_update);
+	UNITY_END();
 }
 
 void loop()
 {
-	// Write pulse to load pin
-	digitalWrite(pinLoad, LOW);
-	delayMicroseconds(5);
-	digitalWrite(pinLoad, HIGH);
-	delayMicroseconds(5);
-
-	// Get data from 74HC165
-	digitalWrite(pinClockIn, HIGH);
-	//digitalWrite(pinClockEnable, LOW);
-	byte incoming = shiftIn(pinDataIn, pinClockIn, MSBFIRST);
-	digitalWrite(pinClockEnable, HIGH);
-
-	// Print to serial monitor
-	Serial.println(incoming, BIN);
-	delay(200);
 }
